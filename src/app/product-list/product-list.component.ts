@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductList } from '../models/product-list.model';
+import { Product } from '../models/product.model';
 import { ProductService } from '../service/product.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ProductService } from '../service/product.service';
 })
 export class ProductListComponent implements OnInit {
   displayedColumns: string[] = ['idex', 'code', 'name', 'price'];
-  productList: ProductList[] = [];
+  productList: Product[] = [];
   itemsPerPage: number = 5;
   public currentPage = 1;
   totalCount: number = 1;
