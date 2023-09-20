@@ -1,0 +1,10 @@
+<app-product-list
+  [productList]="productList"
+  [currentPage]="currentPage"
+  [itemsPerPage]="itemsPerPage"
+  [totalCount]="totalCount"
+  [maxPage]="maxPage"
+  [displayedColumns]="displayedColumns"
+  (addProduct)="addProduct()"
+  (handlePage)="handlePage($event)"
+></app-product-list>

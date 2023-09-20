@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from '../models/product.model';
-import { ProductService } from '../service/product.service';
+import { IGetProduct, Product } from 'src/app/models/product.model';
+import { ProductService } from 'src/app/service/product.service';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css'],
+  selector: 'app-product-list-view',
+  templateUrl: './product-list-view.component.html',
+  styleUrls: ['./product-list-view.component.css'],
 })
-export class ProductListComponent implements OnInit {
-  displayedColumns: string[] = ['idex', 'code', 'name', 'price'];
-  productList: Product[] = [];
+export class ProductListViewComponent implements OnInit {
+  productList: IGetProduct[] = [];
   itemsPerPage: number = 5;
   public currentPage = 1;
   totalCount: number = 1;
   maxPage: number = 1;
+  displayedColumns: string[] = ['idex', 'code', 'name', 'price'];
 
   constructor(private router: Router, private productService: ProductService) {}
 
@@ -22,12 +22,6 @@ export class ProductListComponent implements OnInit {
     this.getPageableProductList();
   }
 
-  public handlePage(e: any) {
-    this.currentPage = e.pageIndex + 1;
-    this.itemsPerPage = e.pageSize;
-
-    this.getPageableProductList();
-  }
   getPageableProductList() {
     this.productService
       .getPageableProductList(this.currentPage, this.itemsPerPage)
@@ -37,6 +31,13 @@ export class ProductListComponent implements OnInit {
         this.maxPage = res.totalPages;
         this.currentPage = res.currentPage;
       });
+  }
+
+  public handlePage(e: any) {
+    this.currentPage = e.pageIndex + 1;
+    this.itemsPerPage = e.pageSize;
+
+    this.getPageableProductList();
   }
 
   addProduct() {

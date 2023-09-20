@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProductService } from '../service/product.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-product-add',
@@ -9,10 +8,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./product-add.component.css'],
 })
 export class ProductAddComponent {
-  isLoginFailed = false;
-  errorMessage = '';
+  @Input()
+  isLoginFailed: boolean;
+  @Input()
+  errorMessage: string;
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor() {}
 
   public addProductForm = new FormGroup({
     code: new FormControl('', Validators.required),
@@ -20,9 +21,10 @@ export class ProductAddComponent {
     price: new FormControl(null, Validators.required),
   });
 
-  public onBack() {
-    this.router.navigate(['/product']);
-  }
+  @Output()
+  public back: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  public addProduct: EventEmitter<Product> = new EventEmitter<Product>();
 
   getErrorMessage(field: string) {
     if (this.addProductForm?.get(field)?.hasError('required')) {
@@ -31,18 +33,12 @@ export class ProductAddComponent {
     return;
   }
 
-  public onSubmit() {
+  public submit() {
+    this.addProductForm.markAllAsTouched();
+
     if (!this.addProductForm.invalid) {
       const value = JSON.stringify(this.addProductForm.value);
-      this.productService.addProduct(JSON.parse(value)).subscribe(
-        () => {
-          this.router.navigate(['/product']);
-        },
-        (err) => {
-          this.errorMessage = err.error.message;
-          this.isLoginFailed = true;
-        }
-      );
+      this.addProduct.emit(JSON.parse(value));
     }
   }
 }

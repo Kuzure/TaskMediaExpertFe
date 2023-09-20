@@ -2,7 +2,7 @@
   <button
     color="primary"
     mat-raised-button
-    (click)="addProduct()"
+    (click)="addProduct.emit()"
     class="demo-button"
   >
     <mat-icon>add</mat-icon>
@@ -47,7 +47,7 @@
   <mat-paginator
     [length]="totalCount"
     [pageSize]="itemsPerPage"
-    (page)="handlePage($event)"
+    (page)="handlePage.emit($event)"
     [pageSizeOptions]="[5, 10, 20]"
     showFirstLastButtons="true"
   >
